@@ -2,19 +2,22 @@ const container = document.getElementById("container");
 const solveMazeButton = document.getElementById("solve-maze-button");
 const standardMaze = 
 [
-    [0,0,0,0,1,0],
-    [1,1,0,1,0,1],
-    [0,0,0,1,0,0],
-    [0,1,1,1,0,0],
-    [0,1,0,0,0,0],
-    [0,1,1,1,0,0],
-    [0,0,0,1,0,0],
-    [0,0,0,0,0,0],
-    [0,0,0,0,0,0]
+    [0,0,0,0,1,0,0,1,0],
+    [1,1,0,0,0,1,0,1,0],
+    [0,0,0,1,1,0,0,1,0],
+    [0,1,1,1,0,1,0,1,0],
+    [0,0,0,0,0,1,0,0,0],
+    [0,1,1,1,1,0,0,0,0],
+    [0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,0],
+    [0,0,1,0,1,1,1,0,0],
+    [0,0,1,1,0,0,0,1,0],
+    [0,0,0,0,0,0,0,1,0]
 ]
 
 function makeMaze(maze) {
 container.innerHTML = ''
+
 
 maze.forEach((e,r) => {
   let row = document.createElement("div");
@@ -36,7 +39,7 @@ maze.forEach((e,r) => {
 
 }
 
-solveMazeButton.onclick = ()=>{makeMaze(dijkstra(standardMaze,{x:0,y:0},{x:8,y:5}))}
+solveMazeButton.onclick = ()=>{makeMaze(dijkstra(standardMaze,{x:0,y:0},{x: standardMaze.length-1, y:standardMaze[standardMaze.length-1].length-1}))}
 makeMaze(standardMaze);
 
 
@@ -90,6 +93,7 @@ function dijkstra(maze, startCoordinates, endCoordinates){
       currentNode = heap[0]
       yyy++
       if(heap.length === 0) checker = false
+
   }    
   const finalPath = []
   showPath(mazeWDetails, end.x, end.y, finalPath)
@@ -121,7 +125,6 @@ function showPath(solvedArray, x, y, finalPath){
       }
   }
 }
-
 
 function relaxsation(nodesToCheck, currentNode){
   for (let i = 0; i < nodesToCheck.length; i++){
