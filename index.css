@@ -1,0 +1,39 @@
+
+  .row{
+    color: red;
+    background-color: blue;
+    width: 100%;
+    clear:both;
+    
+  }
+
+  .open-cell {
+    
+    padding: 5;
+    border: 1px solid #ddd;
+    text-align: center;
+    
+    width: 5%;
+    height: 5%;
+    float: left;
+  }
+  .closed-cell {
+    padding: 5;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: black;
+    width: 5%;
+    height: 5%;
+    float: left;
+  }
+  .path-cell {
+    padding: 5;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: yellow;
+    width: 5%;
+    height: 5%;
+    float: left;
+  }
+
+  
