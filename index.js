@@ -40,7 +40,8 @@ function makeMaze(maze) {
         if(x===1){row.appendChild(cell).className = "closed-cell";}
         if(x===2){row.appendChild(cell).className = "path-cell";}
         if(x===3){row.appendChild(cell).className = "current-cell";}
-    
+        if(x===4){row.appendChild(cell).className = "heap-cell";}
+        
         cell.onclick =(e)=>{changeMaze(standardMaze,e)}
       })
     })
@@ -82,6 +83,12 @@ function showAlgoPath(arrayOfHeaps, originalWithPath){
     const x = heapObj.currentNode.coordinates.x
     const y = heapObj.currentNode.coordinates.y
     copy[x][y] = 3
+    for(let i= 0; i< heapObj.heap.length-1; i++){
+      const x = heapObj.heap[i].coordinates.x
+      const y = heapObj.heap[i].coordinates.y
+      copy[x][y] = 4
+    }
+    
     console.log(heapObj.currentNode.coordinates, heapObj.heap)
     to+=80
     setTimeout(()=>{makeMaze(copy)},to) 

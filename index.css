@@ -30,7 +30,7 @@
     padding: 5;
     border: 1px solid #ddd;
     text-align: center;
-    background-color: yellow;
+    background-image: linear-gradient(#ffff00 16%, #9999ff 128%);
     width: 5%;
     height: 5%;
     float: left;
@@ -39,7 +39,16 @@
     padding: 5;
     border: 1px solid #ddd;
     text-align: center;
-    background-color: red;
+    background-image: linear-gradient( #ffff66 -25%, #3366ff 77%);
+    width: 5%;
+    height: 5%;
+    float: left;
+  }
+  .heap-cell {
+    padding: 5;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-image: linear-gradient( #66ff66 23%, #00ffcc 54%);
     width: 5%;
     height: 5%;
     float: left;
