@@ -73,13 +73,13 @@ makeMaze(standardMaze)
 function showAlgoPath(arrayOfHeaps, originalWithPath){
 
   console.log('algo time')
-  let to= 80
+  let to= 60
+  
   arrayOfHeaps.forEach(async (heapObj)=>{
     const copy = standardMaze.map((x) => {
       return(x.map((y)=>{return y}))
     })
 
-    
     const x = heapObj.currentNode.coordinates.x
     const y = heapObj.currentNode.coordinates.y
     copy[x][y] = 3
@@ -90,7 +90,7 @@ function showAlgoPath(arrayOfHeaps, originalWithPath){
     }
     
     console.log(heapObj.currentNode.coordinates, heapObj.heap)
-    to+=80
+    to+=60
     setTimeout(()=>{makeMaze(copy)},to) 
   })
   setTimeout(()=>{makeMaze(originalWithPath)},to)
