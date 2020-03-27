@@ -7,3 +7,4 @@ Link to video:
 https://youtu.be/0JWeH_g9gUc
 
 
+![](maze-solver-sc.png)
