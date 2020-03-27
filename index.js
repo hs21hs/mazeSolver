@@ -24,26 +24,27 @@ const standardMaze =
 
 function makeMaze(maze) {
   //put everything in here in timeout it will show algo little bit
-  container.innerHTML = ''
+    container.innerHTML = ''
 
-  maze.forEach((e,r) => {
-    let row = document.createElement("div");
-    container.appendChild(row).className = "row"
-    e.forEach((x,c) => {
-      let cell = document.createElement("div");
-      cell.id = [r,c]
-  
-      if (r === 0 && c === 0){cell.innerText = "start"}
-      if (r === maze.length-1 && c === e.length-1){cell.innerText = "end"}
-  
-      if(x===0){row.appendChild(cell).className = "open-cell";}
-      if(x===1){row.appendChild(cell).className = "closed-cell";}
-      if(x===2){row.appendChild(cell).className = "path-cell";}
-      if(x===3){row.appendChild(cell).className = "current-cell";}
-  
-      cell.onclick =(e)=>{changeMaze(standardMaze,e)}
+    maze.forEach((e,r) => {
+      let row = document.createElement("div");
+      container.appendChild(row).className = "row"
+      e.forEach((x,c) => {
+        let cell = document.createElement("div");
+        cell.id = [r,c]
+    
+        if (r === 0 && c === 0){cell.innerText = "start"}
+        if (r === maze.length-1 && c === e.length-1){cell.innerText = "end"}
+    
+        if(x===0){row.appendChild(cell).className = "open-cell";}
+        if(x===1){row.appendChild(cell).className = "closed-cell";}
+        if(x===2){row.appendChild(cell).className = "path-cell";}
+        if(x===3){row.appendChild(cell).className = "current-cell";}
+    
+        cell.onclick =(e)=>{changeMaze(standardMaze,e)}
+      })
     })
-  })
+  
 }
 
 solveMazeButton.onclick = ()=>{solveMaze()}
@@ -51,7 +52,8 @@ makeMaze(standardMaze);
 
 
 function solveMaze(){
-  makeMaze(dijkstra(standardMaze,{x:0,y:0},{x: standardMaze.length-1, y:standardMaze[standardMaze.length-1].length-1},true))
+  const obj = dijkstra(standardMaze,{x:0,y:0},{x: standardMaze.length-1, y:standardMaze[standardMaze.length-1].length-1},true)
+  showAlgoPath(obj.arrayOfHeaps, obj.originalWithPath)
 }
 
 function changeMaze(maze,e){
@@ -67,10 +69,10 @@ makeMaze(standardMaze)
 }
 
 
-function showAlgoPath(arrayOfHeaps){
+function showAlgoPath(arrayOfHeaps, originalWithPath){
 
   console.log('algo time')
-  
+  let to= 80
   arrayOfHeaps.forEach(async (heapObj)=>{
     const copy = standardMaze.map((x) => {
       return(x.map((y)=>{return y}))
@@ -81,10 +83,11 @@ function showAlgoPath(arrayOfHeaps){
     const y = heapObj.currentNode.coordinates.y
     copy[x][y] = 3
     console.log(heapObj.currentNode.coordinates, heapObj.heap)
-    makeMaze(copy)
+    to+=80
+    setTimeout(()=>{makeMaze(copy)},to) 
   })
+  setTimeout(()=>{makeMaze(originalWithPath)},to)
   
-
   
 }
 
@@ -133,9 +136,7 @@ function dijkstra(maze, startCoordinates, endCoordinates, showAlgo){
   const finalPath = []
   showPath(mazeWDetails, end.x, end.y, finalPath)
 
-  if(showAlgo){showAlgoPath(arrayOfHeaps)}
-  
-  return originalWithPath(maze,finalPath)
+  return ({arrayOfHeaps: arrayOfHeaps, originalWithPath: originalWithPath(maze,finalPath)})
   
 }
 
