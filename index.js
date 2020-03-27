@@ -1,47 +1,58 @@
+Array.prototype.unique = function() {
+  return this.filter(function (value, index, self) { 
+    return self.indexOf(value) === index;
+  });
+}
+
 const container = document.getElementById("container");
 const solveMazeButton = document.getElementById("solve-maze-button");
 const standardMaze = 
 [
-    [0,0,0,0,1,0,0,1,0],
-    [1,1,0,0,0,1,0,1,0],
-    [0,0,0,1,1,0,0,1,0],
-    [0,1,1,1,0,1,0,1,0],
-    [0,0,0,0,0,1,0,0,0],
-    [0,1,1,1,1,0,0,0,0],
-    [0,0,0,1,0,0,0,0,0],
-    [0,0,0,0,0,0,1,0,0],
-    [0,0,1,0,1,1,1,0,0],
-    [0,0,1,1,0,0,0,1,0],
-    [0,0,0,0,0,0,0,1,0]
+  [0,0,0,0,1,0,0,1,0],
+  [1,1,0,0,0,1,0,1,0],
+  [0,0,0,1,1,0,0,1,0],
+  [0,1,1,1,0,1,0,1,0],
+  [0,0,0,0,0,1,0,0,0],
+  [0,1,1,1,1,0,0,0,0],
+  [0,0,0,1,0,0,0,0,0],
+  [0,0,0,0,0,0,1,0,0],
+  [0,0,1,0,1,1,1,0,0],
+  [0,0,1,1,0,0,0,1,0],
+  [0,0,0,0,0,0,0,1,0]
 ]
 
+
 function makeMaze(maze) {
-container.innerHTML = ''
+  //put everything in here in timeout it will show algo little bit
+  container.innerHTML = ''
 
-
-maze.forEach((e,r) => {
-  let row = document.createElement("div");
-  container.appendChild(row).className = "row"
-  e.forEach((x,c) => {
-    let cell = document.createElement("div");
-    cell.id = [r,c]
-
-    if (r === 0 && c === 0){cell.innerText = "start"}
-    if (r === maze.length-1 && c === e.length-1){cell.innerText = "end"}
-
-    if(x===0){row.appendChild(cell).className = "open-cell";}
-    if(x===1){row.appendChild(cell).className = "closed-cell";}
-    if(x===2){row.appendChild(cell).className = "path-cell";}
-
-    cell.onclick =(e)=>{changeMaze(standardMaze,e)}
+  maze.forEach((e,r) => {
+    let row = document.createElement("div");
+    container.appendChild(row).className = "row"
+    e.forEach((x,c) => {
+      let cell = document.createElement("div");
+      cell.id = [r,c]
+  
+      if (r === 0 && c === 0){cell.innerText = "start"}
+      if (r === maze.length-1 && c === e.length-1){cell.innerText = "end"}
+  
+      if(x===0){row.appendChild(cell).className = "open-cell";}
+      if(x===1){row.appendChild(cell).className = "closed-cell";}
+      if(x===2){row.appendChild(cell).className = "path-cell";}
+      if(x===3){row.appendChild(cell).className = "current-cell";}
+  
+      cell.onclick =(e)=>{changeMaze(standardMaze,e)}
+    })
   })
-})
-
 }
 
-solveMazeButton.onclick = ()=>{makeMaze(dijkstra(standardMaze,{x:0,y:0},{x: standardMaze.length-1, y:standardMaze[standardMaze.length-1].length-1}))}
+solveMazeButton.onclick = ()=>{solveMaze()}
 makeMaze(standardMaze);
 
+
+function solveMaze(){
+  makeMaze(dijkstra(standardMaze,{x:0,y:0},{x: standardMaze.length-1, y:standardMaze[standardMaze.length-1].length-1},true))
+}
 
 function changeMaze(maze,e){
   
@@ -56,12 +67,33 @@ makeMaze(standardMaze)
 }
 
 
+function showAlgoPath(arrayOfHeaps){
 
-
-
-
-function dijkstra(maze, startCoordinates, endCoordinates){
+  console.log('algo time')
   
+  arrayOfHeaps.forEach(async (heapObj)=>{
+    const copy = standardMaze.map((x) => {
+      return(x.map((y)=>{return y}))
+    })
+
+    
+    const x = heapObj.currentNode.coordinates.x
+    const y = heapObj.currentNode.coordinates.y
+    copy[x][y] = 3
+    console.log(heapObj.currentNode.coordinates, heapObj.heap)
+    makeMaze(copy)
+  })
+  
+
+  
+}
+
+
+
+function dijkstra(maze, startCoordinates, endCoordinates, showAlgo){
+  
+  const arrayOfHeaps = []
+
   const mazeWDetails = getMazeWDetails(maze)
   const start = {x: startCoordinates.x, y: startCoordinates.y}
   const end = {x: endCoordinates.x, y: endCoordinates.y}
@@ -84,8 +116,11 @@ function dijkstra(maze, startCoordinates, endCoordinates){
       
       const nodesToCheck = getNodesToCheck(currentNode, mazeWDetails)
       relaxsation(nodesToCheck, currentNode)
-      heap = [...heap, ...nodesToCheck]
+      heap = [...heap, ...nodesToCheck].unique()
       
+      const heapAndCurrentNode = {currentNode: currentNode, heap: heap}
+      arrayOfHeaps.push(heapAndCurrentNode)
+
       currentNode.visited = true
       if(currentNode.start === false){heap.shift()}
       heap.sort(function(a, b) {return a.shortestPath.val - b.shortestPath.val;});
@@ -97,6 +132,8 @@ function dijkstra(maze, startCoordinates, endCoordinates){
   }    
   const finalPath = []
   showPath(mazeWDetails, end.x, end.y, finalPath)
+
+  if(showAlgo){showAlgoPath(arrayOfHeaps)}
   
   return originalWithPath(maze,finalPath)
   
@@ -147,10 +184,7 @@ function getNodesToCheck(node,maze){
       if(maze[node.coordinates.x-1][node.coordinates.y] && maze[node.coordinates.x-1][node.coordinates.y].visited === false && maze[node.coordinates.x-1][node.coordinates.y].deadEnd === false){arr.push(maze[node.coordinates.x-1][node.coordinates.y])}
   }
   if(maze[node.coordinates.x+1]){
-      if(maze[node.coordinates.x+1][node.coordinates.y]){
-          
-      }
-          if(maze[node.coordinates.x+1][node.coordinates.y].visited === false && maze[node.coordinates.x+1][node.coordinates.y].deadEnd === false){arr.push(maze[node.coordinates.x+1][node.coordinates.y])}
+      if(maze[node.coordinates.x+1][node.coordinates.y] && maze[node.coordinates.x+1][node.coordinates.y].visited === false && maze[node.coordinates.x+1][node.coordinates.y].deadEnd === false){arr.push(maze[node.coordinates.x+1][node.coordinates.y])}
   }
   const heap = arr.sort(function(a, b) {
       return a.shortestPath.val - b.shortestPath.val;
@@ -170,3 +204,4 @@ function getMazeWDetails(maze){
    })
    return mazeWDetails
 } 
+
