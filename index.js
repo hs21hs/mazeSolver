@@ -8,17 +8,16 @@ const container = document.getElementById("container");
 const solveMazeButton = document.getElementById("solve-maze-button");
 const standardMaze = 
 [
-  [0,0,0,0,1,0,0,1,0],
-  [1,1,0,0,0,1,0,1,0],
-  [0,0,0,1,1,0,0,1,0],
-  [0,1,1,1,0,1,0,1,0],
-  [0,0,0,0,0,1,0,0,0],
-  [0,1,1,1,1,0,0,0,0],
-  [0,0,0,1,0,0,0,0,0],
-  [0,0,0,0,0,0,1,0,0],
-  [0,0,1,0,1,1,1,0,0],
-  [0,0,1,1,0,0,0,1,0],
-  [0,0,0,0,0,0,0,1,0]
+  [0,0,0,0,1,0,0,0,0,1],
+  [1,1,0,0,0,1,0,1,0,1],
+  [0,0,0,1,1,0,0,1,0,1],
+  [0,1,1,1,0,1,0,1,0,1],
+  [0,0,0,0,0,1,0,0,0,1],
+  [0,1,1,1,1,0,0,1,0,0],
+  [0,0,0,1,0,0,0,0,0,0],
+  [0,0,0,0,0,0,1,0,0,0],
+  [0,0,1,0,1,1,1,0,0,0],
+ 
 ]
 
 
@@ -28,10 +27,11 @@ function makeMaze(maze) {
 
     maze.forEach((e,r) => {
       let row = document.createElement("div");
+      row.id = r
       container.appendChild(row).className = "row"
       e.forEach((x,c) => {
         let cell = document.createElement("div");
-        cell.id = [r,c]
+        cell.id = c
     
         if (r === 0 && c === 0){cell.innerText = "start"}
         if (r === maze.length-1 && c === e.length-1){cell.innerText = "end"}
@@ -59,13 +59,16 @@ function solveMaze(){
 
 function changeMaze(maze,e){
   
-  const coordinates = e.target.id
+  const coloumnCoordinate = e.target.id
+  const rowCoordinate = e.target.parentNode.id
+  
 
-  if(maze[coordinates[0]][coordinates[2]] === 0){
-    maze[coordinates[0]][coordinates[2]] = 1
+  if(maze[rowCoordinate][coloumnCoordinate] === 0){
+    maze[rowCoordinate][coloumnCoordinate] = 1
   }else{
-    maze[coordinates[0]][coordinates[2]] = 0
+    maze[rowCoordinate][coloumnCoordinate] = 0
   }
+  
 makeMaze(standardMaze)
 }
 
@@ -213,3 +216,27 @@ function getMazeWDetails(maze){
    return mazeWDetails
 } 
 
+
+
+
+
+// [
+//   [0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,1,1,1,0,1,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,1,0,1,1,1,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,1,1,1,0,1,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,1,1,1,1,0,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,1,0,1,1,1,0,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0],
+//   [0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,0]
+// ]
