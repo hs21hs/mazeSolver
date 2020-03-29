@@ -6,12 +6,26 @@
 
     <body id = "body">
         
-        -black spaces are walls, white are open paths. 
         <br>
         -click on a cell to add or remove wall!
         <br>
         <br>
-        <button id= "solve-maze-button">solve maze</button> (will show you how the algorithim scans the maze and finds the shortest path.)
+
+        <label>Select Algorithim</label>
+            <select id="select-algo">
+                <option value="dijkstra">Dijkstras Algorithim</option>
+                <option value="aStar">A*Search</option>
+            </select>
+          <br>
+          <label>Select Maze</label>
+            <select id="select-maze">
+                <option value="dijkstra">Optimal with Dijkstras Algorithim</option>
+                <option value="aStar">Optimal with A*Search</option>
+            </select>
+            <br>
+          (each maze will show the strengths of one algorithim)
+          <br>
+        <button id= "solve-maze-button">solve maze</button> 
         <div id="container">
         </div>
     </body>

@@ -1,10 +1,10 @@
 # mazeSolver
-This app uses Dijkstras algorithim to find the fastest path through a maze.
+This app allows you to to construct mazes and choose a pathfinding algorithim to solve them: Dijkstras algorithim or A* Search
 
 Please open index.html to use.
 
 Link to video:
-https://youtu.be/YaPDZXRLcdI
+https://youtu.be/QmyP52pU5Zc
 
 
 ![](maze-solver-sc.png)
