@@ -130,7 +130,7 @@ makeMaze(standardMaze)
 function showAlgoPath(arrayOfVisitedNodes, originalWithPath, algo){
 
   if(algo === "dijkstra"){
-    console.log('algo time')
+    console.log('dijkstra algo time')
     let to= 20
 
     const copy = standardMaze.map((x) => {
@@ -277,6 +277,7 @@ function aStar(maze, startCoordinates, endCoordinates){
       });
       //console.log('heap', heap[0],heap[1],heap)
       //console.log(yyy, "c", currentNode, "h", heap)
+      if(currentNode.shortestPath.val=== "infinity"){checker = false}
       currentNode = heap[0]
       yyy++
       if(currentNode.coordinates.x === end.x && currentNode.coordinates.y === end.y) checker = false
